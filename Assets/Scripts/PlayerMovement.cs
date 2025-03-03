@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField]
+    private Rigidbody2D rb2D;
+
+    public float horizontalSpeed;
+    public float jumpForce;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (rb2D == null)
+        {
+            Debug.Log("Rigibody2D is not initlialized");
+            rb2D = GetComponent<Rigidbody2D>();
+        }
     }
 
     // Update is called once per frame
@@ -15,13 +25,18 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            transform.position += new Vector3(-0.001f, 0);
+            rb2D.velocity = new Vector2((0 - horizontalSpeed), 0);
         }
 
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            transform.position += new Vector3(0.1f, 0);
+            rb2D.velocity = new Vector2(horizontalSpeed, 0);
         }
 
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            Debug.Log("JUMP");
+            rb2D.AddForce(new Vector2(0, jumpForce));
+        }
     }
 }
